@@ -29,7 +29,7 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
       <div className="container">
         <a href="#home" className="logo" onClick={() => scrollToSection('home')}>
-          GOLD'S GYM
+          THE LIFE GYM
         </a>
         
         <ul className={`nav-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>

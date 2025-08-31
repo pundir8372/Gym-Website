@@ -7,6 +7,7 @@ const NutritionTracker = () => {
     age: "",
     weight: "",
     height: "",
+    gender: "male",
     activity: "moderate",
     goal: "maintain"
   });
@@ -15,7 +16,7 @@ const NutritionTracker = () => {
 
   const calculateNutrition = (e) => {
     e.preventDefault();
-    const { age, weight, height, activity, goal } = formData;
+    const { age, weight, height, gender, activity, goal } = formData;
     
     if (!age || !weight || !height) {
       toast.error("Please fill all required fields");
@@ -23,7 +24,12 @@ const NutritionTracker = () => {
     }
 
     // BMR calculation (Mifflin-St Jeor Equation)
-    const bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+    let bmr;
+    if (gender === "male") {
+      bmr = 10 * parseFloat(weight) + 6.25 * parseFloat(height) - 5 * parseFloat(age) + 5;
+    } else {
+      bmr = 10 * parseFloat(weight) + 6.25 * parseFloat(height) - 5 * parseFloat(age) - 161;
+    }
     
     // Activity multipliers
     const activityMultipliers = {
@@ -40,9 +46,10 @@ const NutritionTracker = () => {
     if (goal === "lose") calories -= 500;
     if (goal === "gain") calories += 500;
 
-    const protein = weight * 2.2; // 2.2g per kg
-    const fat = calories * 0.25 / 9; // 25% of calories
-    const carbs = (calories - (protein * 4) - (fat * 9)) / 4;
+    // Macronutrient calculations
+    const protein = parseFloat(weight) * 2.2; // 2.2g per kg
+    const fat = calories * 0.25 / 9; // 25% of calories from fat
+    const carbs = (calories - (protein * 4) - (fat * 9)) / 4; // Remaining calories from carbs
 
     setResults({
       calories: Math.round(calories),
@@ -61,6 +68,7 @@ const NutritionTracker = () => {
       age: "",
       weight: "",
       height: "",
+      gender: "male",
       activity: "moderate",
       goal: "maintain"
     });
@@ -74,56 +82,58 @@ const NutritionTracker = () => {
 
   const mealPlans = [
     {
-      name: "Muscle Building",
-      calories: "2800-3200",
-      description: "High protein diet for muscle growth",
+      name: "Weight Loss Plan",
+      calories: "1500-1800",
+      description: "High protein, moderate carbs, healthy fats for sustainable weight loss",
       meals: [
-        "Breakfast: Oatmeal with berries and protein powder",
-        "Lunch: Grilled chicken salad with quinoa",
-        "Snack: Protein smoothie with banana",
-        "Dinner: Salmon with sweet potato and vegetables"
+        "Breakfast: Greek yogurt with berries and almonds",
+        "Lunch: Grilled chicken salad with olive oil dressing",
+        "Snack: Apple with peanut butter",
+        "Dinner: Baked salmon with steamed vegetables"
       ]
     },
     {
-      name: "Fat Loss",
+      name: "Muscle Gain Plan",
+      calories: "2200-2800",
+      description: "High protein, complex carbs, and healthy fats for muscle building",
+      meals: [
+        "Breakfast: Oatmeal with protein powder and banana",
+        "Lunch: Quinoa bowl with chicken and vegetables",
+        "Snack: Protein shake with berries",
+        "Dinner: Lean beef with sweet potato and broccoli"
+      ]
+    },
+    {
+      name: "Maintenance Plan",
       calories: "1800-2200",
-      description: "Calorie deficit with balanced macros",
+      description: "Balanced nutrition for maintaining current weight and health",
       meals: [
-        "Breakfast: Greek yogurt parfait with nuts",
-        "Lunch: Turkey and avocado wrap",
-        "Snack: Apple with almond butter",
-        "Dinner: Grilled fish with steamed vegetables"
-      ]
-    },
-    {
-      name: "Maintenance",
-      calories: "2200-2600",
-      description: "Balanced nutrition for weight maintenance",
-      meals: [
-        "Breakfast: Whole grain toast with avocado",
-        "Lunch: Quinoa bowl with mixed vegetables",
+        "Breakfast: Whole grain toast with avocado and eggs",
+        "Lunch: Turkey and hummus wrap with vegetables",
         "Snack: Mixed nuts and fruit",
-        "Dinner: Lean beef with brown rice and vegetables"
+        "Dinner: Grilled fish with brown rice and vegetables"
       ]
     }
   ];
 
   return (
-    <section className="nutrition-tracker section" id="nutrition">
+    <section id="nutrition" className="section nutrition-tracker">
       <div className="container">
         <h2 className="section-title">Nutrition Tracker</h2>
-        <p className="section-subtitle">Fuel your fitness journey with proper nutrition</p>
-        
+        <p className="section-subtitle">
+          Calculate your daily nutrition needs and explore healthy meal plans
+        </p>
+
         <div className="nutrition-tabs">
           <button 
-            className={`tab-btn ${activeTab === "calculator" ? "active" : ""}`}
-            onClick={() => setActiveTab("calculator")}
+            className={`tab-btn ${activeTab === 'calculator' ? 'active' : ''}`}
+            onClick={() => setActiveTab('calculator')}
           >
-            Calculator
+            Nutrition Calculator
           </button>
           <button 
-            className={`tab-btn ${activeTab === "plans" ? "active" : ""}`}
-            onClick={() => setActiveTab("plans")}
+            className={`tab-btn ${activeTab === 'plans' ? 'active' : ''}`}
+            onClick={() => setActiveTab('plans')}
           >
             Meal Plans
           </button>
@@ -131,20 +141,35 @@ const NutritionTracker = () => {
 
         {activeTab === "calculator" && (
           <div className="nutrition-calculator">
-            <form className="calculator-form" onSubmit={calculateNutrition}>
+            <form onSubmit={calculateNutrition} className="calculator-form">
               <h3>Calculate Your Daily Nutrition Needs</h3>
               
               <div className="form-row">
                 <div className="form-group">
-                  <label>Age *</label>
+                  <label>Age (years) *</label>
                   <input
                     type="number"
                     value={formData.age}
                     onChange={(e) => setFormData({...formData, age: e.target.value})}
                     placeholder="25"
+                    min="16"
+                    max="80"
                     required
                   />
                 </div>
+                <div className="form-group">
+                  <label>Gender *</label>
+                  <select
+                    value={formData.gender}
+                    onChange={(e) => setFormData({...formData, gender: e.target.value})}
+                  >
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div className="form-row">
                 <div className="form-group">
                   <label>Weight (kg) *</label>
                   <input
@@ -152,12 +177,11 @@ const NutritionTracker = () => {
                     value={formData.weight}
                     onChange={(e) => setFormData({...formData, weight: e.target.value})}
                     placeholder="70"
+                    min="30"
+                    max="200"
                     required
                   />
                 </div>
-              </div>
-              
-              <div className="form-row">
                 <div className="form-group">
                   <label>Height (cm) *</label>
                   <input
@@ -165,9 +189,14 @@ const NutritionTracker = () => {
                     value={formData.height}
                     onChange={(e) => setFormData({...formData, height: e.target.value})}
                     placeholder="175"
+                    min="120"
+                    max="220"
                     required
                   />
                 </div>
+              </div>
+              
+              <div className="form-row">
                 <div className="form-group">
                   <label>Activity Level</label>
                   <select
@@ -181,18 +210,17 @@ const NutritionTracker = () => {
                     <option value="very_active">Very Active (2x/day, intense)</option>
                   </select>
                 </div>
-              </div>
-
-              <div className="form-group">
-                <label>Goal</label>
-                <select
-                  value={formData.goal}
-                  onChange={(e) => setFormData({...formData, goal: e.target.value})}
-                >
-                  <option value="lose">Lose Weight (-500 cal/day)</option>
-                  <option value="maintain">Maintain Weight</option>
-                  <option value="gain">Gain Weight (+500 cal/day)</option>
-                </select>
+                <div className="form-group">
+                  <label>Goal</label>
+                  <select
+                    value={formData.goal}
+                    onChange={(e) => setFormData({...formData, goal: e.target.value})}
+                  >
+                    <option value="lose">Lose Weight (-500 cal/day)</option>
+                    <option value="maintain">Maintain Weight</option>
+                    <option value="gain">Gain Weight (+500 cal/day)</option>
+                  </select>
+                </div>
               </div>
 
               <div className="calculator-buttons">
@@ -209,7 +237,7 @@ const NutritionTracker = () => {
               <div className="nutrition-results">
                 <div className="results-header">
                   <h3>Your Daily Nutrition Goals</h3>
-                  <button className="close-result-btn" onClick={closeResults}>&times;</button>
+                  <button className="close-result-btn" onClick={closeResults}>×</button>
                 </div>
                 
                 <div className="macro-grid">

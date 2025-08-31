@@ -10,14 +10,15 @@ import WorkoutSessions from "./components/WorkoutSessions";
 import ClassSchedule from "./components/ClassSchedule";
 import Membership from "./components/Membership";
 import Trainers from "./components/Trainers";
-import ProgressTracker from "./components/ProgressTracker";
 import Testimonials from "./components/Testimonials";
 import Gallery from "./components/Gallery";
 import BMICalculator from "./components/BMICalculator";
 import NutritionTracker from "./components/NutritionTracker";
+import FAQ from "./components/FAQ";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AdminPanel from "./components/AdminPanel";
+import Chatbot from "./components/Chatbot";
 
 const HomePage = () => (
   <>
@@ -28,13 +29,14 @@ const HomePage = () => (
     <ClassSchedule />
     <Membership />
     <Trainers />
-    <ProgressTracker />
     <Testimonials />
     <Gallery />
     <BMICalculator />
     <NutritionTracker />
+    <FAQ />
     <Contact />
     <Footer />
+    <Chatbot />
   </>
 );
 

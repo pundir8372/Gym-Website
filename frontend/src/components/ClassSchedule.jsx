@@ -2,208 +2,209 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const ClassSchedule = () => {
-  const [selectedDay, setSelectedDay] = useState("Monday");
-  const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
-  const [bookingForm, setBookingForm] = useState({
+  const [bookingData, setBookingData] = useState({
     name: "",
     email: "",
     phone: ""
   });
 
-  const schedule = {
-    Monday: [
-      { id: 1, time: "06:00", class: "Morning Yoga", trainer: "Sarah Johnson", spots: 5, duration: "60 min" },
-      { id: 2, time: "08:00", class: "HIIT Training", trainer: "Mike Wilson", spots: 2, duration: "45 min" },
-      { id: 3, time: "18:00", class: "Strength Training", trainer: "David Brown", spots: 8, duration: "90 min" }
-    ],
-    Tuesday: [
-      { id: 4, time: "07:00", class: "Cardio Blast", trainer: "Emma Davis", spots: 3, duration: "45 min" },
-      { id: 5, time: "12:00", class: "Pilates", trainer: "Sarah Johnson", spots: 6, duration: "60 min" },
-      { id: 6, time: "19:00", class: "CrossFit", trainer: "Mike Wilson", spots: 1, duration: "60 min" }
-    ],
-    Wednesday: [
-      { id: 7, time: "06:30", class: "Spin Class", trainer: "Lisa Garcia", spots: 4, duration: "45 min" },
-      { id: 8, time: "17:30", class: "Boxing", trainer: "David Brown", spots: 7, duration: "60 min" },
-      { id: 9, time: "20:00", class: "Zumba", trainer: "Emma Davis", spots: 10, duration: "45 min" }
-    ],
-    Thursday: [
-      { id: 10, time: "06:00", class: "Morning Yoga", trainer: "Sarah Johnson", spots: 3, duration: "60 min" },
-      { id: 11, time: "18:30", class: "Functional Training", trainer: "Mike Wilson", spots: 5, duration: "75 min" }
-    ],
-    Friday: [
-      { id: 12, time: "07:00", class: "HIIT Training", trainer: "David Brown", spots: 4, duration: "45 min" },
-      { id: 13, time: "19:00", class: "Dance Fitness", trainer: "Emma Davis", spots: 8, duration: "60 min" }
-    ],
-    Saturday: [
-      { id: 14, time: "09:00", class: "Weekend Warrior", trainer: "Mike Wilson", spots: 6, duration: "90 min" },
-      { id: 15, time: "11:00", class: "Family Yoga", trainer: "Sarah Johnson", spots: 12, duration: "45 min" }
-    ],
-    Sunday: [
-      { id: 16, time: "10:00", class: "Recovery Yoga", trainer: "Sarah Johnson", spots: 8, duration: "75 min" },
-      { id: 17, time: "16:00", class: "Sunday Strength", trainer: "David Brown", spots: 5, duration: "60 min" }
-    ]
-  };
-
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const classes = [
+    {
+      id: 1,
+      name: "HIIT Training",
+      instructor: "Mike Johnson",
+      time: "6:00 AM - 7:00 AM",
+      days: "Mon, Wed, Fri",
+      duration: "60 min",
+      level: "Intermediate",
+      spots: 12
+    },
+    {
+      id: 2,
+      name: "Yoga Flow",
+      instructor: "Sarah Wilson",
+      time: "7:30 AM - 8:30 AM",
+      days: "Tue, Thu, Sat",
+      duration: "60 min",
+      level: "All Levels",
+      spots: 15
+    },
+    {
+      id: 3,
+      name: "Strength Training",
+      instructor: "David Brown",
+      time: "6:00 PM - 7:00 PM",
+      days: "Mon, Wed, Fri",
+      duration: "60 min",
+      level: "Beginner",
+      spots: 10
+    },
+    {
+      id: 4,
+      name: "Cardio Blast",
+      instructor: "Emma Davis",
+      time: "7:00 PM - 8:00 PM",
+      days: "Tue, Thu",
+      duration: "60 min",
+      level: "All Levels",
+      spots: 20
+    },
+    {
+      id: 5,
+      name: "Pilates",
+      instructor: "Lisa Garcia",
+      time: "9:00 AM - 10:00 AM",
+      days: "Mon, Wed, Fri",
+      duration: "60 min",
+      level: "Beginner",
+      spots: 8
+    },
+    {
+      id: 6,
+      name: "CrossFit",
+      instructor: "Tom Wilson",
+      time: "5:30 PM - 6:30 PM",
+      days: "Mon, Tue, Wed, Thu, Fri",
+      duration: "60 min",
+      level: "Advanced",
+      spots: 6
+    }
+  ];
 
   const handleBookClass = (classItem) => {
     setSelectedClass(classItem);
-    setShowBookingModal(true);
   };
 
-  const handleBookingSubmit = async (e) => {
+  const handleBookingSubmit = (e) => {
     e.preventDefault();
-    
-    if (!bookingForm.name || !bookingForm.email || !bookingForm.phone) {
+    if (!bookingData.name || !bookingData.email || !bookingData.phone) {
       toast.error("Please fill all fields");
       return;
     }
-
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/classes/book`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: bookingForm.name,
-          email: bookingForm.email,
-          phone: bookingForm.phone,
-          className: selectedClass.class,
-          day: selectedDay,
-          time: selectedClass.time,
-          trainer: selectedClass.trainer
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        toast.success(data.message);
-        setShowBookingModal(false);
-        setBookingForm({ name: "", email: "", phone: "" });
-        setSelectedClass(null);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.error('Booking error:', error);
-      toast.error("Booking failed. Please try again.");
-    }
+    
+    toast.success(`Successfully booked ${selectedClass.name}! We'll contact you soon.`);
+    setSelectedClass(null);
+    setBookingData({ name: "", email: "", phone: "" });
   };
 
-  const closeModal = () => {
-    setShowBookingModal(false);
+  const closeBooking = () => {
     setSelectedClass(null);
-    setBookingForm({ name: "", email: "", phone: "" });
+    setBookingData({ name: "", email: "", phone: "" });
   };
 
   return (
-    <section className="class-schedule section" id="classes">
+    <section id="classes" className="section class-schedule">
       <div className="container">
         <h2 className="section-title">Class Schedule</h2>
-        <p className="section-subtitle">Book your spot in our expert-led fitness classes</p>
-        
-        <div className="schedule-nav">
-          {days.map(day => (
-            <button
-              key={day}
-              className={`day-btn ${selectedDay === day ? "active" : ""}`}
-              onClick={() => setSelectedDay(day)}
-            >
-              {day.slice(0, 3)}
-            </button>
+        <p className="section-subtitle">
+          Join our expert-led fitness classes designed for all fitness levels
+        </p>
+
+        <div className="schedule-grid">
+          {classes.map((classItem) => (
+            <div key={classItem.id} className="class-card">
+              <div className="class-header">
+                <h3>{classItem.name}</h3>
+                <span className={`level-badge ${classItem.level.toLowerCase().replace(' ', '-')}`}>
+                  {classItem.level}
+                </span>
+              </div>
+              
+              <div className="class-details">
+                <div className="detail-item">
+                  <i className="fas fa-user"></i>
+                  <span>{classItem.instructor}</span>
+                </div>
+                <div className="detail-item">
+                  <i className="fas fa-clock"></i>
+                  <span>{classItem.time}</span>
+                </div>
+                <div className="detail-item">
+                  <i className="fas fa-calendar"></i>
+                  <span>{classItem.days}</span>
+                </div>
+                <div className="detail-item">
+                  <i className="fas fa-hourglass-half"></i>
+                  <span>{classItem.duration}</span>
+                </div>
+                <div className="detail-item">
+                  <i className="fas fa-users"></i>
+                  <span>{classItem.spots} spots available</span>
+                </div>
+              </div>
+
+              <button 
+                className="btn btn-primary"
+                onClick={() => handleBookClass(classItem)}
+              >
+                Book This Class
+              </button>
+            </div>
           ))}
         </div>
 
-        <div className="schedule-content">
-          <h3 className="schedule-day">{selectedDay}</h3>
-          <div className="classes-list">
-            {schedule[selectedDay]?.map((classItem) => (
-              <div key={classItem.id} className="class-item">
-                <div className="class-time">{classItem.time}</div>
-                <div className="class-details">
-                  <h4>{classItem.class}</h4>
-                  <p>with {classItem.trainer}</p>
-                  <span className="class-duration">{classItem.duration}</span>
-                  <span className="spots-left">{classItem.spots} spots left</span>
+        {selectedClass && (
+          <div className="booking-modal">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h3>Book {selectedClass.name}</h3>
+                <button className="close-modal" onClick={closeBooking}>×</button>
+              </div>
+              
+              <div className="class-summary">
+                <p><strong>Instructor:</strong> {selectedClass.instructor}</p>
+                <p><strong>Time:</strong> {selectedClass.time}</p>
+                <p><strong>Days:</strong> {selectedClass.days}</p>
+              </div>
+
+              <form onSubmit={handleBookingSubmit} className="booking-form">
+                <div className="form-group">
+                  <label>Full Name</label>
+                  <input
+                    type="text"
+                    value={bookingData.name}
+                    onChange={(e) => setBookingData({...bookingData, name: e.target.value})}
+                    placeholder="Enter your full name"
+                    required
+                  />
                 </div>
-                <button 
-                  className="book-btn"
-                  onClick={() => handleBookClass(classItem)}
-                  disabled={classItem.spots === 0}
-                >
-                  {classItem.spots === 0 ? "Full" : "Book Now"}
-                </button>
-              </div>
-            )) || <p className="no-classes">No classes scheduled for this day</p>}
+                
+                <div className="form-group">
+                  <label>Email Address</label>
+                  <input
+                    type="email"
+                    value={bookingData.email}
+                    onChange={(e) => setBookingData({...bookingData, email: e.target.value})}
+                    placeholder="Enter your email"
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label>Phone Number</label>
+                  <input
+                    type="tel"
+                    value={bookingData.phone}
+                    onChange={(e) => setBookingData({...bookingData, phone: e.target.value})}
+                    placeholder="Enter your phone number"
+                    required
+                  />
+                </div>
+
+                <div className="modal-actions">
+                  <button type="button" className="btn btn-secondary" onClick={closeBooking}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Confirm Booking
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
+        )}
       </div>
-
-      {/* Booking Modal */}
-      {showBookingModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h3>Book Class</h3>
-              <button className="close-btn" onClick={closeModal}>&times;</button>
-            </div>
-            
-            <div className="class-booking-info">
-              <h4>{selectedClass?.class}</h4>
-              <p>{selectedDay} at {selectedClass?.time}</p>
-              <p>Trainer: {selectedClass?.trainer}</p>
-              <p>Duration: {selectedClass?.duration}</p>
-            </div>
-
-            <form onSubmit={handleBookingSubmit} className="booking-form">
-              <div className="form-group">
-                <label>Full Name</label>
-                <input
-                  type="text"
-                  value={bookingForm.name}
-                  onChange={(e) => setBookingForm({...bookingForm, name: e.target.value})}
-                  placeholder="Enter your full name"
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Email</label>
-                <input
-                  type="email"
-                  value={bookingForm.email}
-                  onChange={(e) => setBookingForm({...bookingForm, email: e.target.value})}
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label>Phone Number</label>
-                <input
-                  type="tel"
-                  value={bookingForm.phone}
-                  onChange={(e) => setBookingForm({...bookingForm, phone: e.target.value})}
-                  placeholder="Enter your phone number"
-                  required
-                />
-              </div>
-
-              <div className="modal-buttons">
-                <button type="button" className="btn btn-secondary" onClick={closeModal}>
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Confirm Booking
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

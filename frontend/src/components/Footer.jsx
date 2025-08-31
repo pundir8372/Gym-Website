@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-content">
           <div className="footer-section">
-            <h3>GOLD'S GYM</h3>
+            <h3>THE LIFE GYM</h3>
             <p>
               The legendary gym where champions are made. Join us and become part 
               of the fitness legacy that has been inspiring greatness since 1965.
@@ -59,7 +59,7 @@ const Footer = () => {
         </div>
         
         <div className="footer-bottom">
-          <p>&copy; 2024 Gold's Gym. All rights reserved. | Privacy Policy | Terms of Service</p>
+          <p>&copy; 2025 The Life Gym. All rights reserved. | Privacy Policy | Terms of Service</p>
         </div>
       </div>
     </footer>

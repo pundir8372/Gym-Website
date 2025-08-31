@@ -51,7 +51,7 @@ router.post("/send/mail", async (req, res) => {
     });
 
     const emailContent = `
-New Contact Form Submission from Gold's Gym Website
+New Contact Form Submission from The Life Gym Website
 
 Name: ${name}
 Email: ${email}
@@ -62,12 +62,12 @@ ${message}
 
 ---
 Submission ID: ${contact._id}
-This message was sent from the Gold's Gym website contact form.
+This message was sent from The Life Gym website contact form.
     `;
 
     await sendEmail({
       email: process.env.ADMIN_EMAIL || "admin@goldsgym.com",
-      subject: "New Contact Form Submission - Gold's Gym",
+      subject: "New Contact Form Submission - The Life Gym",
       message: emailContent,
       userEmail: email,
     });
@@ -108,7 +108,7 @@ router.post("/membership/inquiry", async (req, res) => {
     });
 
     const emailContent = `
-New Membership Inquiry from Gold's Gym Website
+New Membership Inquiry from The Life Gym Website
 
 Name: ${name}
 Email: ${email}
@@ -120,7 +120,7 @@ ${message || 'None'}
 
 ---
 Inquiry ID: ${inquiry._id}
-This inquiry was sent from the Gold's Gym website membership section.
+This inquiry was sent from The Life Gym website membership section.
     `;
 
     await sendEmail({
@@ -168,7 +168,7 @@ router.post("/classes/book", async (req, res) => {
     });
 
     const emailContent = `
-New Class Booking from Gold's Gym Website
+New Class Booking from The Life Gym Website
 
 Name: ${name}
 Email: ${email}
@@ -377,18 +377,18 @@ router.post("/newsletter/subscribe", async (req, res) => {
 
   try {
     const emailContent = `
-New Newsletter Subscription from Gold's Gym Website
+New Newsletter Subscription from The Life Gym Website
 
 Name: ${name || 'Not provided'}
 Email: ${email}
 
 ---
-This subscription was made from the Gold's Gym website.
+This subscription was made from The Life Gym website.
     `;
 
     await sendEmail({
       email: process.env.ADMIN_EMAIL || "newsletter@goldsgym.com",
-      subject: "New Newsletter Subscription - Gold's Gym",
+      subject: "New Newsletter Subscription - The Life Gym",
       message: emailContent,
       userEmail: email,
     });
@@ -422,7 +422,7 @@ app.use("/api", router);
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Welcome to Gold's Gym Enhanced API with MongoDB",
+    message: "Welcome to The Life Gym Enhanced API with MongoDB",
     features: [
       "Contact Forms",
       "Membership Inquiries", 
@@ -438,6 +438,6 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
-  console.log(`Gold's Gym Enhanced API server listening on port ${PORT}`);
+  console.log(`The Life Gym Enhanced API server listening on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
