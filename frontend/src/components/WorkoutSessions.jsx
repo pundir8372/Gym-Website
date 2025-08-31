@@ -1,51 +1,47 @@
-import React from "react";
+import React from 'react';
 
 const WorkoutSessions = () => {
+  const workouts = [
+    {
+      title: 'Strength Training',
+      description: 'Build muscle and increase power with our comprehensive strength training programs.',
+      icon: 'fas fa-dumbbell'
+    },
+    {
+      title: 'Cardio Workouts',
+      description: 'Improve cardiovascular health and burn calories with high-intensity cardio sessions.',
+      icon: 'fas fa-heartbeat'
+    },
+    {
+      title: 'Group Classes',
+      description: 'Join our energetic group fitness classes for motivation and community support.',
+      icon: 'fas fa-users'
+    },
+    {
+      title: 'Personal Training',
+      description: 'Get personalized attention with one-on-one training sessions tailored to your goals.',
+      icon: 'fas fa-user-tie'
+    }
+  ];
+
   return (
-    <section className="workout_session">
-      <div className="wrapper">
-        <h1>TOP WORKOUT SESSION</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur,
-          quisquam. Eaque alias, blanditiis quidem maiores illo unde ipsam!
+    <section id="workouts" className="workouts section">
+      <div className="container">
+        <h2 className="section-title">WORKOUT SESSIONS</h2>
+        <p className="section-subtitle">
+          Discover our comprehensive range of workout programs designed to help you achieve your fitness goals
         </p>
-        <img src="/img5.jpg" alt="workout" />
-      </div>
-      <div className="wrapper">
-        <h1>FEATURED BOOTCAMPS</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti
-          impedit quasi sunt amet rerum accusamus odio eveniet unde?
-        </p>
-        <div className="bootcamps">
-          <div>
-            <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h4>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa
-              saepe repellendus nemo sit facere ipsam!
-            </p>
-          </div>
-          <div>
-            <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h4>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa
-              saepe repellendus nemo sit facere ipsam!
-            </p>
-          </div>
-          <div>
-            <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h4>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa
-              saepe repellendus nemo sit facere ipsam!
-            </p>
-          </div>
-          <div>
-            <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</h4>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa
-              saepe repellendus nemo sit facere ipsam!
-            </p>
-          </div>
+        
+        <div className="workouts-grid">
+          {workouts.map((workout, index) => (
+            <div key={index} className="workout-card">
+              <div className="workout-icon">
+                <i className={workout.icon}></i>
+              </div>
+              <h3>{workout.title}</h3>
+              <p>{workout.description}</p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

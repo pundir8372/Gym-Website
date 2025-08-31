@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const BMICalculator = () => {
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
-  const [gender, setGender] = useState("");
-  const [bmi, setBmi] = useState("");
+  const [height, setHeight] = useState('');
+  const [weight, setWeight] = useState('');
+  const [gender, setGender] = useState('');
+  const [bmi, setBmi] = useState('');
+  const [status, setStatus] = useState('');
 
   const calculateBMI = (e) => {
     e.preventDefault();
 
     if (!height || !weight || !gender) {
-      toast.error("Please enter valid height, weight and gender.");
+      toast.error('Please fill in all fields');
       return;
     }
 
@@ -20,64 +21,88 @@ const BMICalculator = () => {
     setBmi(bmiValue);
 
     if (bmiValue < 18.5) {
-      toast.warning(
-        "You are underweight. Consider seeking advide from a healthcare provider."
-      );
+      setStatus('Underweight');
     } else if (bmiValue >= 18.5 && bmiValue < 24.9) {
-      toast.success(
-        "You have normal weight. Keep maintaing a healthy lifestyle."
-      );
+      setStatus('Normal weight');
     } else if (bmiValue >= 25 && bmiValue < 29.9) {
-      toast.warning(
-        "You are overweight. Consider seeking advide from a healthcare provider."
-      );
+      setStatus('Overweight');
     } else {
-      toast.error(
-        "You are in the obese range. It is recommended to seek advice from a healthcare specialist.."
-      );
+      setStatus('Obese');
     }
+
+    toast.success('BMI calculated successfully!');
   };
 
   return (
-    <section className="bmi">
-      <h1>BMI CALCULATOR</h1>
+    <section id="bmi" className="bmi section">
       <div className="container">
-        <div className="wrapper">
-          <form onSubmit={calculateBMI}>
-            <div>
-              <label>Height (cm)</label>
-              <input
-                type="number"
-                value={height}
-                onChange={(e) => setHeight(e.target.value)}
-                required
-              />
+        <h2 className="section-title">BMI CALCULATOR</h2>
+        <p className="section-subtitle">
+          Calculate your Body Mass Index to understand your current fitness level
+        </p>
+        
+        <div className="bmi-content">
+          <form className="bmi-form" onSubmit={calculateBMI}>
+            <div className="form-row">
+              <div className="form-group">
+                <label htmlFor="height">Height (cm)</label>
+                <input
+                  type="number"
+                  id="height"
+                  value={height}
+                  onChange={(e) => setHeight(e.target.value)}
+                  placeholder="Enter your height"
+                  required
+                />
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="weight">Weight (kg)</label>
+                <input
+                  type="number"
+                  id="weight"
+                  value={weight}
+                  onChange={(e) => setWeight(e.target.value)}
+                  placeholder="Enter your weight"
+                  required
+                />
+              </div>
             </div>
-            <div>
-              <label>Weight (kg)</label>
-              <input
-                type="number"
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label>Gender</label>
+            
+            <div className="form-group">
+              <label htmlFor="gender">Gender</label>
               <select
+                id="gender"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
+                required
               >
                 <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
             </div>
-            <button type="submit">Calculate BMI</button>
+            
+            <button type="submit" className="btn btn-primary">
+              CALCULATE BMI
+            </button>
           </form>
-        </div>
-        <div className="wrapper">
-          <img src="/bmi.jpg" alt="bmiImage" />
+          
+          {bmi && (
+            <div className="bmi-result">
+              <h3>Your BMI Result</h3>
+              <div className="bmi-value">{bmi}</div>
+              <div className={`bmi-status ${status.toLowerCase().replace(' ', '-')}`}>
+                {status}
+              </div>
+              <p className="bmi-advice">
+                {status === 'Normal weight' 
+                  ? 'Great! You have a healthy BMI. Keep up the good work!'
+                  : 'Consider consulting with our trainers for a personalized fitness plan.'
+                }
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

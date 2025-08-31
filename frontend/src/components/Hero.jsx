@@ -1,21 +1,35 @@
-import React from "react";
+import React from 'react';
 
 const Hero = () => {
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section className="hero">
-      <div className="content">
-        <div className="title">
-          <h1>LET'S</h1>
-          <h1>GET</h1>
-          <h1>MOVING</h1>
-        </div>
-        <div className="sub-title">
-          <p>Your Journey to Fitness Starts Here</p>
-          <p>Unleash Your Potential</p>
-        </div>
-        <div className="buttons">
-          <button>Start Your Journey</button>
-          <button>Discover Your Plan</button>
+    <section id="home" className="hero">
+      <div className="hero-content">
+        <h1>
+          WHERE <span className="highlight">LEGENDS</span> ARE MADE
+        </h1>
+        <p>
+          Transform your body, mind, and life at the world's most legendary gym
+        </p>
+        <div className="hero-buttons">
+          <button 
+            className="btn btn-primary"
+            onClick={() => scrollToSection('membership')}
+          >
+            JOIN NOW
+          </button>
+          <button 
+            className="btn btn-secondary"
+            onClick={() => scrollToSection('about')}
+          >
+            LEARN MORE
+          </button>
         </div>
       </div>
     </section>

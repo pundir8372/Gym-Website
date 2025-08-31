@@ -1,83 +1,164 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { ClipLoader } from "react-spinners";
-import { toast } from "react-toastify";
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Contact = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const sendMail = async (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setIsSubmitting(true);
+
     try {
-      const { data } = await axios.post(
-        "http://localhost:4000/send/mail",
-        {
-          name,
-          email,
-          message,
+      const response = await fetch('http://localhost:4000/api/send/mail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      setName("");
-      setEmail("");
-      setMessage("");
-      toast.success(data.message);
-      setLoading(false);
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success(data.message);
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          message: ''
+        });
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      setLoading(false);
-      toast.error(error.response.data.message);
+      console.error('Error sending message:', error);
+      toast.error('Failed to send message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="contact">
-      <form onSubmit={sendMail}>
-        <h1>CONTACT US</h1>
-        <div>
-          <label>Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+    <section id="contact" className="contact section">
+      <div className="container">
+        <h2 className="section-title">GET IN TOUCH</h2>
+        <p className="section-subtitle">
+          Ready to start your legendary fitness journey? Contact us today!
+        </p>
+        
+        <div className="contact-content">
+          <div className="contact-info">
+            <h3>Visit Our Gym</h3>
+            
+            <div className="contact-item">
+              <i className="fas fa-map-marker-alt"></i>
+              <div>
+                <h4>Address</h4>
+                <p>123 Fitness Street<br />Los Angeles, CA 90210</p>
+              </div>
+            </div>
+            
+            <div className="contact-item">
+              <i className="fas fa-phone"></i>
+              <div>
+                <h4>Phone</h4>
+                <p>(555) 123-4567</p>
+              </div>
+            </div>
+            
+            <div className="contact-item">
+              <i className="fas fa-envelope"></i>
+              <div>
+                <h4>Email</h4>
+                <p>info@goldsgym.com</p>
+              </div>
+            </div>
+            
+            <div className="contact-item">
+              <i className="fas fa-clock"></i>
+              <div>
+                <h4>Hours</h4>
+                <p>Mon-Fri: 5:00 AM - 11:00 PM<br />
+                   Sat-Sun: 6:00 AM - 10:00 PM</p>
+              </div>
+            </div>
+          </div>
+          
+          <form className="contact-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="email">Email Address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="phone">Phone Number</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                disabled={isSubmitting}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
+                placeholder="Tell us about your fitness goals..."
+                required
+                disabled={isSubmitting}
+              ></textarea>
+            </div>
+            
+            <button 
+              type="submit" 
+              className="btn btn-primary"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'SENDING...' : 'SEND MESSAGE'}
+            </button>
+          </form>
         </div>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Message</label>
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "15px",
-          }}
-        >
-          {loading && <ClipLoader size={20} color="white" />}
-          Send Message
-        </button>
-      </form>
+      </div>
     </section>
   );
 };

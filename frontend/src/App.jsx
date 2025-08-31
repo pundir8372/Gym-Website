@@ -1,15 +1,18 @@
 import React from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import About from "./components/About";
 import WorkoutSessions from "./components/WorkoutSessions";
+import Membership from "./components/Membership";
+import Trainers from "./components/Trainers";
+import Testimonials from "./components/Testimonials";
 import Gallery from "./components/Gallery";
-import Pricing from "./components/Pricing";
-import Contact from "./components/Contact";
 import BMICalculator from "./components/BMICalculator";
+import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 
 const App = () => {
@@ -17,11 +20,14 @@ const App = () => {
     <Router>
       <Navbar />
       <Hero />
+      <About />
       <WorkoutSessions />
+      <Membership />
+      <Trainers />
+      <Testimonials />
       <Gallery />
-      <Pricing />
-      <Contact />
       <BMICalculator />
+      <Contact />
       <Footer />
       <ToastContainer theme="dark" position="top-center" />
     </Router>
