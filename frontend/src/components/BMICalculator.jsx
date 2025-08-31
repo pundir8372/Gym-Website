@@ -7,6 +7,7 @@ const BMICalculator = () => {
   const [gender, setGender] = useState('');
   const [bmi, setBmi] = useState('');
   const [status, setStatus] = useState('');
+  const [showResult, setShowResult] = useState(false);
 
   const calculateBMI = (e) => {
     e.preventDefault();
@@ -30,7 +31,21 @@ const BMICalculator = () => {
       setStatus('Obese');
     }
 
+    setShowResult(true);
     toast.success('BMI calculated successfully!');
+  };
+
+  const resetCalculator = () => {
+    setHeight('');
+    setWeight('');
+    setGender('');
+    setBmi('');
+    setStatus('');
+    setShowResult(false);
+  };
+
+  const closeResult = () => {
+    setShowResult(false);
   };
 
   return (
@@ -83,24 +98,53 @@ const BMICalculator = () => {
               </select>
             </div>
             
-            <button type="submit" className="btn btn-primary">
-              CALCULATE BMI
-            </button>
+            <div className="bmi-buttons">
+              <button type="submit" className="btn btn-primary">
+                CALCULATE BMI
+              </button>
+              <button type="button" className="btn btn-secondary" onClick={resetCalculator}>
+                RESET
+              </button>
+            </div>
           </form>
           
-          {bmi && (
+          {showResult && bmi && (
             <div className="bmi-result">
-              <h3>Your BMI Result</h3>
+              <div className="result-header">
+                <h3>Your BMI Result</h3>
+                <button className="close-result-btn" onClick={closeResult}>&times;</button>
+              </div>
+              
               <div className="bmi-value">{bmi}</div>
               <div className={`bmi-status ${status.toLowerCase().replace(' ', '-')}`}>
                 {status}
               </div>
+              
+              <div className="bmi-details">
+                <p><strong>Height:</strong> {height} cm</p>
+                <p><strong>Weight:</strong> {weight} kg</p>
+                <p><strong>Gender:</strong> {gender}</p>
+              </div>
+              
               <p className="bmi-advice">
                 {status === 'Normal weight' 
                   ? 'Great! You have a healthy BMI. Keep up the good work!'
-                  : 'Consider consulting with our trainers for a personalized fitness plan.'
+                  : status === 'Underweight'
+                  ? 'Consider a muscle-building program with our trainers.'
+                  : status === 'Overweight'
+                  ? 'A balanced diet and cardio program can help you reach your goals.'
+                  : 'We recommend consulting with our nutrition and fitness experts.'
                 }
               </p>
+              
+              <div className="bmi-actions">
+                <button className="btn btn-primary" onClick={() => document.getElementById('membership').scrollIntoView({behavior: 'smooth'})}>
+                  Join Our Gym
+                </button>
+                <button className="btn btn-secondary" onClick={() => document.getElementById('contact').scrollIntoView({behavior: 'smooth'})}>
+                  Get Consultation
+                </button>
+              </div>
             </div>
           )}
         </div>

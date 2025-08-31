@@ -1,147 +1,126 @@
 # Gold's Gym Website
 
-A modern, responsive gym website built with React and Vite, featuring a professional Gold's Gym-inspired design.
+A modern, responsive gym website built with React and Node.js featuring class booking, membership management, and admin dashboard.
 
-## Features
+## 🌟 Features
 
-- **Modern Design**: Black and gold color scheme inspired by Gold's Gym branding
-- **Responsive Layout**: Fully responsive design for mobile, tablet, and desktop
-- **Smooth Animations**: CSS transitions and scroll animations
-- **Interactive Components**: 
-  - Sticky navigation with smooth scrolling
-  - Testimonials carousel
-  - Hover effects on cards and images
-  - Contact form with validation
-- **SEO Optimized**: Meta tags, semantic HTML, and accessibility features
+### Frontend
+- **Responsive Design** - Works on all devices
+- **Interactive Components** - Class booking, progress tracking, BMI calculator
+- **Modern UI** - Smooth animations and professional design
+- **Admin Panel** - Real-time statistics and data management
 
-## Sections
+### Backend
+- **MongoDB Database** - Persistent data storage
+- **Email Notifications** - Automated email system
+- **RESTful API** - Clean, documented endpoints
+- **Admin Dashboard** - Business analytics and insights
 
-1. **Hero Section**: Eye-catching banner with call-to-action buttons
-2. **About Us**: Company information with features grid
-3. **Membership Plans**: Three-tier pricing with featured plan
-4. **Trainers**: Team showcase with social links
-5. **Testimonials**: Customer reviews with auto-rotating carousel
-6. **Gallery**: Image grid with hover effects
-7. **Contact**: Contact form and business information
-8. **Footer**: Links, social media, and company details
+## 🚀 Live Demo
 
-## Tech Stack
+**Website:** https://pundir8372.github.io/Gym_Website/
+**Admin Panel:** https://pundir8372.github.io/Gym_Website/admin
+**Admin Password:** `goldsgym2024`
 
-- **Frontend**: React 18, Vite
-- **Styling**: CSS3 with custom properties and Flexbox/Grid
-- **Icons**: Font Awesome 6
-- **Fonts**: Google Fonts (Oswald, Roboto)
-- **Notifications**: React Toastify
-- **Routing**: React Router DOM
+## 🛠️ Tech Stack
 
-## Installation & Setup
+### Frontend
+- React 18
+- React Router
+- React Toastify
+- Vite
+- CSS3 with animations
 
-1. Clone the repository:
+### Backend
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- Nodemailer
+- JWT Authentication
+
+## 📦 Installation
+
+### Frontend
 ```bash
-git clone https://github.com/Abhinav8630/Gym_Website.git
-cd Gym_Website/frontend
-```
-
-2. Install dependencies:
-```bash
+cd frontend
 npm install
-```
-
-3. Start development server:
-```bash
 npm run dev
 ```
 
-4. Build for production:
+### Backend
 ```bash
-npm run build
+cd backend
+npm install
+npm start
 ```
 
-## Deployment
+## 🔧 Configuration
 
-### Vercel Deployment
-1. Connect your GitHub repository to Vercel
-2. Set build command: `npm run build`
-3. Set output directory: `dist`
-4. Deploy automatically on push to main branch
-
-### GitHub Pages Deployment
-1. Build the project: `npm run build`
-2. Deploy the `dist` folder to GitHub Pages
-3. Ensure `_redirects` file is included for SPA routing
-
-### Netlify Deployment
-1. Connect repository to Netlify
-2. Build command: `npm run build`
-3. Publish directory: `dist`
-4. The `_redirects` file will handle SPA routing
-
-## File Structure
-
-```
-frontend/
-├── public/
-│   ├── _redirects          # SPA routing for deployment
-│   └── favicon.ico         # Site favicon
-├── src/
-│   ├── components/
-│   │   ├── About.jsx       # About section
-│   │   ├── Contact.jsx     # Contact form and info
-│   │   ├── Footer.jsx      # Site footer
-│   │   ├── Gallery.jsx     # Image gallery
-│   │   ├── Hero.jsx        # Hero banner
-│   │   ├── Membership.jsx  # Pricing plans
-│   │   ├── Navbar.jsx      # Navigation bar
-│   │   ├── Testimonials.jsx # Customer reviews
-│   │   └── Trainers.jsx    # Team showcase
-│   ├── App.css            # Main stylesheet
-│   ├── App.jsx            # Main app component
-│   └── main.jsx           # App entry point
-├── index.html             # HTML template
-├── package.json           # Dependencies and scripts
-└── vite.config.js         # Vite configuration
+### Environment Variables
+Create `backend/config.env`:
+```env
+PORT=4000
+MONGO_URI=mongodb://localhost:27017/goldsgym
+SMTP_HOST=smtp.gmail.com
+SMTP_SERVICE=gmail
+SMTP_PORT=465
+SMTP_MAIL=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+ADMIN_EMAIL=admin@goldsgym.com
+JWT_SECRET=your-jwt-secret
 ```
 
-## Customization
+## 📱 Features Overview
 
-### Colors
-Update CSS custom properties in `App.css`:
-```css
-:root {
-  --primary-black: #000000;
-  --primary-gold: #FFD700;
-  --secondary-gold: #FFA500;
-  /* ... other colors */
-}
+### For Members
+- **Class Booking** - Reserve spots in fitness classes
+- **Membership Plans** - Compare and inquire about plans
+- **Progress Tracking** - Set and monitor fitness goals
+- **BMI Calculator** - Health assessment tool
+- **Nutrition Tracker** - Personalized nutrition planning
+
+### For Gym Owners
+- **Admin Dashboard** - Business analytics
+- **Member Management** - Track inquiries and bookings
+- **Email Notifications** - Automated communication
+- **Data Analytics** - Usage statistics and trends
+
+## 🚀 Deployment
+
+### GitHub Pages (Frontend)
+```bash
+cd frontend
+npm run deploy
 ```
 
-### Content
-- Update text content in component files
-- Replace placeholder images with actual gym photos
-- Modify contact information in `Contact.jsx` and `Footer.jsx`
-- Update social media links throughout components
+### Backend Deployment
+Deploy to Heroku, Railway, or any Node.js hosting service.
 
-### Styling
-- Modify component styles in `App.css`
-- Adjust responsive breakpoints as needed
-- Customize animations and transitions
+## 📊 Admin Panel
 
-## Performance Optimizations
+Access the admin panel at `/admin` with password: `goldsgym2024`
 
-- Lazy loading for images
-- Optimized image formats (WebP recommended)
-- Minified CSS and JavaScript in production
-- Efficient React component structure
-- Smooth scrolling with CSS `scroll-behavior`
+Features:
+- Real-time statistics
+- Recent bookings and inquiries
+- Member data management
+- Business analytics
 
-## Browser Support
+## 🔐 Security Features
 
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers (iOS Safari, Chrome Mobile)
+- Input validation
+- Rate limiting
+- Secure password handling
+- Environment variable protection
 
-## License
+## 📞 Support
 
-This project is open source and available under the [MIT License](LICENSE).
+For support or customization requests, contact the development team.
+
+## 📄 License
+
+This project is licensed under the ISC License.
+
+---
+
+**Built with ❤️ for Gold's Gym**

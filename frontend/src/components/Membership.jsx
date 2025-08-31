@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const Membership = () => {
+  const [showMembershipModal, setShowMembershipModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [membershipForm, setMembershipForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
+
   const plans = [
     {
       name: 'Basic',
@@ -46,28 +55,29 @@ const Membership = () => {
     }
   ];
 
-  const handleMembershipInquiry = async (planName) => {
-    const name = prompt('Enter your full name:');
-    const email = prompt('Enter your email address:');
-    const phone = prompt('Enter your phone number (optional):');
+  const handleMembershipInquiry = (plan) => {
+    setSelectedPlan(plan);
+    setShowMembershipModal(true);
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
     
-    if (!name || !email) {
+    if (!membershipForm.name || !membershipForm.email) {
       toast.error('Please provide your name and email address.');
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:4000/api/membership/inquiry', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/membership/inquiry`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name,
-          email,
-          phone: phone || '',
-          plan: planName,
-          message: `I'm interested in the ${planName} membership plan.`
+          ...membershipForm,
+          plan: selectedPlan.name,
+          message: membershipForm.message || `I'm interested in the ${selectedPlan.name} membership plan.`
         }),
       });
 
@@ -75,6 +85,7 @@ const Membership = () => {
 
       if (data.success) {
         toast.success(data.message);
+        closeModal();
       } else {
         toast.error(data.message);
       }
@@ -82,6 +93,12 @@ const Membership = () => {
       console.error('Error sending membership inquiry:', error);
       toast.error('Failed to send inquiry. Please try again later.');
     }
+  };
+
+  const closeModal = () => {
+    setShowMembershipModal(false);
+    setSelectedPlan(null);
+    setMembershipForm({ name: "", email: "", phone: "", message: "" });
   };
 
   return (
@@ -110,7 +127,7 @@ const Membership = () => {
               
               <button 
                 className="btn btn-primary"
-                onClick={() => handleMembershipInquiry(plan.name)}
+                onClick={() => handleMembershipInquiry(plan)}
               >
                 GET STARTED
               </button>
@@ -118,6 +135,76 @@ const Membership = () => {
           ))}
         </div>
       </div>
+
+      {/* Membership Modal */}
+      {showMembershipModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Join {selectedPlan?.name} Plan</h3>
+              <button className="close-btn" onClick={closeModal}>&times;</button>
+            </div>
+            
+            <div className="membership-info">
+              <h4>{selectedPlan?.name} - {selectedPlan?.price}{selectedPlan?.period}</h4>
+              <p>Fill out the form below and our team will contact you within 24 hours.</p>
+            </div>
+
+            <form onSubmit={handleFormSubmit} className="membership-form">
+              <div className="form-group">
+                <label>Full Name *</label>
+                <input
+                  type="text"
+                  value={membershipForm.name}
+                  onChange={(e) => setMembershipForm({...membershipForm, name: e.target.value})}
+                  placeholder="Enter your full name"
+                  required
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Email Address *</label>
+                <input
+                  type="email"
+                  value={membershipForm.email}
+                  onChange={(e) => setMembershipForm({...membershipForm, email: e.target.value})}
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input
+                  type="tel"
+                  value={membershipForm.phone}
+                  onChange={(e) => setMembershipForm({...membershipForm, phone: e.target.value})}
+                  placeholder="Enter your phone number"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Additional Message</label>
+                <textarea
+                  value={membershipForm.message}
+                  onChange={(e) => setMembershipForm({...membershipForm, message: e.target.value})}
+                  placeholder="Any specific questions or requirements?"
+                  rows="3"
+                />
+              </div>
+
+              <div className="modal-buttons">
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Send Inquiry
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
