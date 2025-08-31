@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Gold's Gym Backend API",
+  "description": "The Life Gym Backend API",
   "main": "app.js",
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "test": "echo 'No tests specified'"
   },
   "keywords": ["gym", "fitness", "api", "nodejs"],
-  "author": "Gold's Gym",
+  "author": "The Life Gym",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
