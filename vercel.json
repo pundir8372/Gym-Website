@@ -1,24 +1,18 @@
 {
   "version": 2,
-  "projects": [
+  "builds": [
     {
-      "name": "gym-website-frontend",
-      "rootDirectory": "frontend",
-      "builds": [
-        {
-          "src": "package.json",
-          "use": "@vercel/static-build",
-          "config": {
-            "distDir": "dist"
-          }
-        }
-      ],
-      "rewrites": [
-        {
-          "source": "/(.*)",
-          "destination": "/index.html"
-        }
-      ]
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
