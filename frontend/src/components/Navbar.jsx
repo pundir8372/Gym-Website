@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { disableBodyScroll, enableBodyScroll } from '../utils/scrollLock';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -10,19 +11,34 @@ const Navbar = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (isMobileMenuOpen) {
+        enableBodyScroll();
+      }
+    };
+  }, [isMobileMenuOpen]);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    setIsMobileMenuOpen(false);
+    if (isMobileMenuOpen) {
+      setIsMobileMenuOpen(false);
+      enableBodyScroll();
+    }
   };
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    const newState = !isMobileMenuOpen;
+    setIsMobileMenuOpen(newState);
+    
+    if (newState) {
+      disableBodyScroll();
+    } else {
+      enableBodyScroll();
+    }
   };
 
   return (

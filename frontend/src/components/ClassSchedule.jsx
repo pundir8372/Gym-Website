@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { disableBodyScroll, enableBodyScroll } from '../utils/scrollLock';
 
 const ClassSchedule = () => {
   const [selectedClass, setSelectedClass] = useState(null);
@@ -74,6 +75,7 @@ const ClassSchedule = () => {
 
   const handleBookClass = (classItem) => {
     setSelectedClass(classItem);
+    disableBodyScroll();
   };
 
   const handleBookingSubmit = (e) => {
@@ -86,11 +88,13 @@ const ClassSchedule = () => {
     toast.success(`Successfully booked ${selectedClass.name}! We'll contact you soon.`);
     setSelectedClass(null);
     setBookingData({ name: "", email: "", phone: "" });
+    enableBodyScroll();
   };
 
   const closeBooking = () => {
     setSelectedClass(null);
     setBookingData({ name: "", email: "", phone: "" });
+    enableBodyScroll();
   };
 
   return (

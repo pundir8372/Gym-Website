@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { disableBodyScroll, enableBodyScroll } from '../utils/scrollLock';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,6 +41,16 @@ const Chatbot = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (isOpen) {
+      disableBodyScroll();
+    } else {
+      enableBodyScroll();
+    }
+    
+    return () => enableBodyScroll();
+  }, [isOpen]);
 
   const handleSend = (message = inputValue) => {
     if (!message.trim()) return;

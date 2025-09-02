@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scroll Lock Test</title>
+    <style>
+        body { height: 200vh; padding: 20px; }
+        .test-modal { 
+            position: fixed; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            background: white; 
+            padding: 20px; 
+            border: 2px solid #ccc;
+            z-index: 1000;
+        }
+        .scroll-locked {
+            overflow: hidden !important;
+            position: fixed !important;
+            width: 100% !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>Scroll Lock Test</h1>
+    <p>This page is tall enough to scroll. Click the button to test scroll lock.</p>
+    <button onclick="toggleModal()">Toggle Modal</button>
+    
+    <div id="modal" class="test-modal" style="display: none;">
+        <h2>Test Modal</h2>
+        <p>Background should not be scrollable when this is open.</p>
+        <button onclick="toggleModal()">Close</button>
+    </div>
+
+    <script>
+        let scrollPosition = 0;
+        let modalOpen = false;
+
+        function disableBodyScroll() {
+            scrollPosition = window.pageYOffset;
+            document.body.classList.add('scroll-locked');
+            document.body.style.top = `-${scrollPosition}px`;
+        }
+
+        function enableBodyScroll() {
+            document.body.classList.remove('scroll-locked');
+            document.body.style.removeProperty('top');
+            window.scrollTo(0, scrollPosition);
+        }
+
+        function toggleModal() {
+            const modal = document.getElementById('modal');
+            modalOpen = !modalOpen;
+            
+            if (modalOpen) {
+                modal.style.display = 'block';
+                disableBodyScroll();
+            } else {
+                modal.style.display = 'none';
+                enableBodyScroll();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { disableBodyScroll, enableBodyScroll } from '../utils/scrollLock';
 
 const Membership = () => {
   const [showMembershipModal, setShowMembershipModal] = useState(false);
@@ -58,6 +59,7 @@ const Membership = () => {
   const handleMembershipInquiry = (plan) => {
     setSelectedPlan(plan);
     setShowMembershipModal(true);
+    disableBodyScroll();
   };
 
   const handleFormSubmit = async (e) => {
@@ -99,6 +101,7 @@ const Membership = () => {
     setShowMembershipModal(false);
     setSelectedPlan(null);
     setMembershipForm({ name: "", email: "", phone: "", message: "" });
+    enableBodyScroll();
   };
 
   return (
