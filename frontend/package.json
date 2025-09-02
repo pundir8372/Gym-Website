@@ -4,12 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-   "build": "vite build",
-    "vercel-build": "npm ci && npm run build",
-    "preview": "vite preview",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
-  },
+  "dev": "vite",
+  "build": "npm ci && vite build",
+  "preview": "vite preview",
+  "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+}
   "dependencies": {
     "axios": "^1.7.2",
     "lucide-react": "^0.379.0",
