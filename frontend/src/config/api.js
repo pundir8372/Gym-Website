@@ -4,11 +4,11 @@ const API_CONFIG = {
     baseURL: 'http://localhost:4000/api',
   },
   production: {
-    baseURL: 'https://your-backend-url.herokuapp.com/api', // Replace with actual backend URL
+    baseURL: '', // Demo mode - no backend
   }
 };
 
-const environment = import.meta.env.MODE || 'development';
+const environment = import.meta.env.MODE || 'production';
 export const API_BASE_URL = API_CONFIG[environment].baseURL;
 
 // API endpoints
@@ -25,6 +25,14 @@ export const API_ENDPOINTS = {
 
 // API utility function
 export const apiCall = async (endpoint, options = {}) => {
+  // Demo mode - return success responses
+  if (!API_BASE_URL) {
+    return {
+      success: true,
+      message: 'Demo submitted successfully! Backend integration will be added after approval.'
+    };
+  }
+  
   const url = `${API_BASE_URL}${endpoint}`;
   
   const defaultOptions = {

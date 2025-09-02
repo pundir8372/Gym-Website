@@ -42,7 +42,7 @@ const HomePage = () => (
 
 const App = () => {
   return (
-    <Router basename="/Gym_Website">
+    <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/admin" element={<AdminPanel />} />
