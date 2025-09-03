@@ -2,7 +2,7 @@ import nodeMailer from "nodemailer";
 
 export const sendEmail = async (options) => {
   try {
-    const transporter = nodeMailer.createTransporter({
+    const transporter = nodeMailer.createTransport({
       host: process.env.SMTP_HOST,
       port: process.env.SMTP_PORT,
       service: process.env.SMTP_SERVICE,
@@ -14,25 +14,29 @@ export const sendEmail = async (options) => {
     });
 
     const mailOptions = {
-      from: `"Gold's Gym" <${process.env.SMTP_MAIL}>`,
+      from: `"The Life Gym" <${process.env.SMTP_MAIL}>`,
       to: options.email,
       subject: options.subject,
       text: options.message,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <div style="background: linear-gradient(135deg, #000000, #FFD700); padding: 20px; text-align: center;">
-            <h1 style="color: #FFD700; margin: 0; font-size: 2rem;">GOLD'S GYM</h1>
-            <p style="color: white; margin: 5px 0;">Where Legends Are Made</p>
-          </div>
-          <div style="padding: 30px; background: #f9f9f9;">
-            <h2 style="color: #333; margin-bottom: 20px;">${options.subject}</h2>
-            <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-              <pre style="white-space: pre-wrap; font-family: Arial, sans-serif; color: #333; line-height: 1.6;">${options.message}</pre>
+         <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: 0 auto; background: #f4f4f4;">
+         <div style="background: linear-gradient(135deg, #1a1a1a, #FFD700); padding: 30px; text-align: center;">
+     <h1 style="color: #FFD700; margin: 0; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">💪 THE LIFE GYM</h1>
+       <p style="color: white; margin: 10px 0; font-size: 1.1rem;">Where Legends Are Made</p>
             </div>
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center; color: #666;">
-              <p>Thank you for contacting Gold's Gym!</p>
-              <p style="font-size: 0.9rem;">This is an automated message from our website contact system.</p>
-            </div>
+<div style="padding: 40px 30px; background: white;">
+<div style="background: linear-gradient(45deg, #FFD700, #FFA500); padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+<h2 style="color: #1a1a1a; margin: 0; text-align: center;">🔥 ${options.subject}</h2>
+</div>
+<div style="background: #f9f9f9; padding: 25px; border-radius: 10px; border-left: 5px solid #FFD700;">
+<pre style="white-space: pre-wrap; font-family: 'Arial', sans-serif; color: #333; line-height: 1.8; margin: 0;">${options.message}</pre>
+</div>
+
+
+            <div style="margin-top: 40px; text-align: center; padding: 20px; background: linear-gradient(135deg, #1a1a1a, #333); border-radius: 10px;">
+<p style="color: #FFD700; font-weight: bold; margin: 0;">🏋️ Thank you for choosing The Life Gym!</p>
+           <p style="color: white; margin: 10px 0; font-size: 0.9rem;">We'll get back to you within 24 hours</p>
+              </div>
           </div>
         </div>
       `,

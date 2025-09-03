@@ -78,18 +78,47 @@ const ClassSchedule = () => {
     disableBodyScroll();
   };
 
-  const handleBookingSubmit = (e) => {
-    e.preventDefault();
-    if (!bookingData.name || !bookingData.email || !bookingData.phone) {
-      toast.error("Please fill all fields");
-      return;
+  const handleBookingSubmit = async (e) => {
+  e.preventDefault();
+  if (!bookingData.name || !bookingData.email || !bookingData.phone) {
+    toast.error("Please fill all fields");
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:4000/api/classes/book', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: bookingData.name,
+        email: bookingData.email,
+        phone: bookingData.phone,
+        className: selectedClass.name,
+        day: selectedClass.days,
+        time: selectedClass.time,
+        trainer: selectedClass.instructor
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      toast.success(data.message);
+    } else {
+      toast.error(data.message);
     }
-    
-    toast.success(`Successfully booked ${selectedClass.name}! We'll contact you soon.`);
-    setSelectedClass(null);
-    setBookingData({ name: "", email: "", phone: "" });
-    enableBodyScroll();
-  };
+  } catch (error) {
+    console.error('Error booking class:', error);
+    toast.error('Failed to book class. Please try again later.');
+  }
+
+  setSelectedClass(null);
+  setBookingData({ name: "", email: "", phone: "" });
+  enableBodyScroll();
+};
+
 
   const closeBooking = () => {
     setSelectedClass(null);

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { disableBodyScroll, enableBodyScroll } from '../utils/scrollLock';
 
 const Membership = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMembershipModal, setShowMembershipModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [membershipForm, setMembershipForm] = useState({
@@ -69,6 +70,7 @@ const Membership = () => {
       toast.error('Please provide your name and email address.');
       return;
     }
+     setIsSubmitting(true);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:4000'}/api/membership/inquiry`, {
@@ -94,6 +96,9 @@ const Membership = () => {
     } catch (error) {
       console.error('Error sending membership inquiry:', error);
       toast.error('Failed to send inquiry. Please try again later.');
+    }
+    finally{
+      setIsSubmitting(false);
     }
   };
 
@@ -200,9 +205,9 @@ const Membership = () => {
                 <button type="button" className="btn btn-secondary" onClick={closeModal}>
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  Send Inquiry
-                </button>
+                <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+  {isSubmitting ? 'SENDING...' : 'Send Inquiry'}
+</button>
               </div>
             </form>
           </div>

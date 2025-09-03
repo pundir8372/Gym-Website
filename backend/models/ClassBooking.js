@@ -21,8 +21,7 @@ const classBookingSchema = new mongoose.Schema({
   },
   day: {
     type: String,
-    required: true,
-    enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    required: true
   },
   time: {
     type: String,

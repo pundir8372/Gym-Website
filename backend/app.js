@@ -66,7 +66,7 @@ This message was sent from The Life Gym website contact form.
     `;
 
     await sendEmail({
-      email: process.env.ADMIN_EMAIL || "admin@goldsgym.com",
+      email: process.env.ADMIN_EMAIL || "admin@lifegym.com",
       subject: "New Contact Form Submission - The Life Gym",
       message: emailContent,
       userEmail: email,
@@ -124,7 +124,7 @@ This inquiry was sent from The Life Gym website membership section.
     `;
 
     await sendEmail({
-      email: process.env.ADMIN_EMAIL || "membership@goldsgym.com",
+      email: process.env.ADMIN_EMAIL || "membership@lifegym.com",
       subject: `New Membership Inquiry - ${plan} Plan`,
       message: emailContent,
       userEmail: email,
@@ -184,7 +184,7 @@ Status: Confirmed
     `;
 
     await sendEmail({
-      email: process.env.ADMIN_EMAIL || "classes@goldsgym.com",
+      email: process.env.ADMIN_EMAIL || "classes@lifegym.com",
       subject: `New Class Booking - ${className}`,
       message: emailContent,
       userEmail: email,
@@ -387,7 +387,7 @@ This subscription was made from The Life Gym website.
     `;
 
     await sendEmail({
-      email: process.env.ADMIN_EMAIL || "newsletter@goldsgym.com",
+      email: process.env.ADMIN_EMAIL || "newsletter@lifegym.com",
       subject: "New Newsletter Subscription - The Life Gym",
       message: emailContent,
       userEmail: email,
@@ -410,7 +410,7 @@ This subscription was made from The Life Gym website.
 router.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "Gold's Gym API is running successfully",
+    message: "Life Gym API is running successfully",
     timestamp: new Date().toISOString(),
     version: "2.0.0"
   });
