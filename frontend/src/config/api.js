@@ -20,7 +20,14 @@ export const API_ENDPOINTS = {
   NUTRITION_CALCULATE: '/nutrition/calculate',
   NEWSLETTER: '/newsletter/subscribe',
   ADMIN_STATS: '/admin/stats',
-  HEALTH: '/health'
+  HEALTH: '/health',
+  // Auth endpoints
+  LOGIN: '/auth/login',
+  SIGNUP: '/auth/signup',
+  USER_DASHBOARD: '/user/dashboard',
+  // Payment endpoints
+  PROCESS_PAYMENT: '/payment/process',
+  PAYMENT_HISTORY: '/payment/history'
 };
 
 // API utility function

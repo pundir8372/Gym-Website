@@ -2761,3 +2761,433 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
   }
 }
+
+/* Authentication Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #1a1a1a;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.auth-form h2 {
+  color: #ff6b35;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.auth-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.auth-form label {
+  display: block;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.auth-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background: #2a2a2a;
+  color: #fff;
+  font-size: 16px;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #ff6b35;
+}
+
+.auth-form .btn {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.auth-form p {
+  text-align: center;
+  margin-top: 1rem;
+  color: #ccc;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #ff6b35;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* User Dashboard Styles */
+.user-dashboard {
+  min-height: 100vh;
+  background: #0a0a0a;
+  padding: 2rem 0;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dashboard-header h2 {
+  color: #ff6b35;
+  margin: 0;
+}
+
+.dashboard-header p {
+  color: #ccc;
+  margin: 0.5rem 0 0 0;
+}
+
+.dashboard-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #333;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+  color: #ff6b35;
+  border-bottom-color: #ff6b35;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid #333;
+}
+
+.stat-card h3 {
+  color: #ccc;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.stat-number {
+  color: #ff6b35;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.stat-text {
+  color: #ff6b35;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.bookings-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.booking-card {
+  background: #1a1a1a;
+  padding: 1.5rem;
+  border-radius: 10px;
+  border: 1px solid #333;
+}
+
+.booking-card h4 {
+  color: #ff6b35;
+  margin-bottom: 1rem;
+}
+
+.booking-card p {
+  color: #ccc;
+  margin: 0.5rem 0;
+}
+
+.booking-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.booking-status.confirmed {
+  background: #28a745;
+  color: white;
+}
+
+.membership-card {
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 10px;
+  border: 1px solid #333;
+  text-align: center;
+}
+
+.membership-card h4 {
+  color: #ff6b35;
+  margin-bottom: 1rem;
+}
+
+.profile-info p {
+  color: #ccc;
+  margin: 1rem 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #333;
+}
+
+.profile-info strong {
+  color: #ff6b35;
+}
+
+/* Payment Modal Styles */
+.payment-modal {
+  max-width: 600px;
+}
+
+.payment-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.payment-header h2 {
+  color: #ff6b35;
+  margin-bottom: 1rem;
+}
+
+.plan-summary {
+  background: #2a2a2a;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.plan-summary h3 {
+  color: #fff;
+  margin: 0;
+}
+
+.plan-price {
+  color: #ff6b35;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0 0;
+}
+
+.payment-methods {
+  margin-bottom: 2rem;
+}
+
+.payment-methods h4 {
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.method-options {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.method-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.card-details, .upi-details {
+  background: #2a2a2a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.payment-summary {
+  background: #2a2a2a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  color: #ccc;
+}
+
+.summary-row.total {
+  border-top: 1px solid #444;
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.payment-btn {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: 1rem;
+}
+
+.upi-amount {
+  text-align: center;
+  margin: 1rem 0;
+  color: #ff6b35;
+  font-size: 1.2rem;
+}
+
+/* Navbar User Menu */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  color: #ff6b35;
+  font-weight: 500;
+}
+
+.plan-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.plan-buttons .btn {
+  flex: 1;
+  min-width: 120px;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  color: #ccc;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .dashboard-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .tab-btn {
+    flex-shrink: 0;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .method-options {
+    flex-direction: column;
+  }
+  
+  .user-menu {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .plan-buttons {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .payment-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .plan-price {
+    font-size: 1.2rem;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+}

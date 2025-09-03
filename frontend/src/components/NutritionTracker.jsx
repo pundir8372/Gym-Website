@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { apiCall, API_ENDPOINTS } from '../config/api';
 
 const NutritionTracker = () => {
   const [activeTab, setActiveTab] = useState("calculator");
@@ -9,58 +10,51 @@ const NutritionTracker = () => {
     height: "",
     gender: "male",
     activity: "moderate",
-    goal: "maintain"
+    goal: "maintain",
+    email: ""
   });
   const [results, setResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
 
-  const calculateNutrition = (e) => {
+  const calculateNutrition = async (e) => {
     e.preventDefault();
-    const { age, weight, height, gender, activity, goal } = formData;
+    const { age, weight, height, gender, activity, goal, email } = formData;
     
     if (!age || !weight || !height) {
       toast.error("Please fill all required fields");
       return;
     }
 
-    // BMR calculation (Mifflin-St Jeor Equation)
-    let bmr;
-    if (gender === "male") {
-      bmr = 10 * parseFloat(weight) + 6.25 * parseFloat(height) - 5 * parseFloat(age) + 5;
-    } else {
-      bmr = 10 * parseFloat(weight) + 6.25 * parseFloat(height) - 5 * parseFloat(age) - 161;
+    try {
+      const response = await apiCall(API_ENDPOINTS.NUTRITION_CALCULATE, {
+        method: 'POST',
+        body: JSON.stringify({
+          age: parseInt(age),
+          weight: parseFloat(weight),
+          height: parseFloat(height),
+          activity,
+          goal,
+          email: email || undefined
+        })
+      });
+
+      if (response.success) {
+        setResults({
+          calories: response.calories,
+          protein: response.protein,
+          carbs: response.carbs,
+          fat: response.fat,
+          bmr: response.bmr
+        });
+        setShowResults(true);
+        toast.success("Nutrition plan calculated and saved successfully!");
+      } else {
+        toast.error(response.message || 'Failed to calculate nutrition');
+      }
+    } catch (error) {
+      console.error('Nutrition calculation error:', error);
+      toast.error('Failed to calculate nutrition. Please try again.');
     }
-    
-    // Activity multipliers
-    const activityMultipliers = {
-      sedentary: 1.2,
-      light: 1.375,
-      moderate: 1.55,
-      active: 1.725,
-      very_active: 1.9
-    };
-
-    let calories = bmr * activityMultipliers[activity];
-    
-    // Goal adjustments
-    if (goal === "lose") calories -= 500;
-    if (goal === "gain") calories += 500;
-
-    // Macronutrient calculations
-    const protein = parseFloat(weight) * 2.2; // 2.2g per kg
-    const fat = calories * 0.25 / 9; // 25% of calories from fat
-    const carbs = (calories - (protein * 4) - (fat * 9)) / 4; // Remaining calories from carbs
-
-    setResults({
-      calories: Math.round(calories),
-      protein: Math.round(protein),
-      carbs: Math.round(carbs),
-      fat: Math.round(fat),
-      bmr: Math.round(bmr)
-    });
-    
-    setShowResults(true);
-    toast.success("Nutrition plan calculated successfully!");
   };
 
   const resetCalculator = () => {
@@ -70,7 +64,8 @@ const NutritionTracker = () => {
       height: "",
       gender: "male",
       activity: "moderate",
-      goal: "maintain"
+      goal: "maintain",
+      email: ""
     });
     setResults(null);
     setShowResults(false);
@@ -221,6 +216,16 @@ const NutritionTracker = () => {
                     <option value="gain">Gain Weight (+500 cal/day)</option>
                   </select>
                 </div>
+              </div>
+
+              <div className="form-group">
+                <label>Email (Optional)</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  placeholder="Enter your email to save results"
+                />
               </div>
 
               <div className="calculator-buttons">

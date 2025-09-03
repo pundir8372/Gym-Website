@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { disableBodyScroll, enableBodyScroll } from '../utils/scrollLock';
 
-const Navbar = () => {
+const Navbar = ({ user, onLoginClick, onDashboardClick }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -58,6 +58,17 @@ const Navbar = () => {
           <li><a href="#gallery" onClick={() => scrollToSection('gallery')}>Gallery</a></li>
           <li><a href="#bmi" onClick={() => scrollToSection('bmi')}>BMI</a></li>
           <li><a href="#contact" onClick={() => scrollToSection('contact')}>Contact</a></li>
+          
+          {user ? (
+            <li className="user-menu">
+              <span className="user-name">Hi, {user.name}</span>
+              <button onClick={onDashboardClick} className="btn btn-primary">Dashboard</button>
+            </li>
+          ) : (
+            <li>
+              <button onClick={onLoginClick} className="btn btn-primary">Login</button>
+            </li>
+          )}
         </ul>
 
         <div 

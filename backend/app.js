@@ -1,6 +1,7 @@
 import express from "express";
 import { config } from "dotenv";
 import cors from "cors";
+import jwt from "jsonwebtoken";
 import { connectDB } from "./config/database.js";
 import { sendEmail } from "./utils/sendEmail.js";
 
@@ -10,6 +11,7 @@ import MembershipInquiry from "./models/MembershipInquiry.js";
 import Contact from "./models/Contact.js";
 import BMIRecord from "./models/BMIRecord.js";
 import NutritionRecord from "./models/NutritionRecord.js";
+import User from "./models/User.js";
 
 const app = express();
 const router = express.Router();
@@ -29,6 +31,172 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Auth middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Access token required' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ success: false, message: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// Authentication routes
+router.post("/auth/signup", async (req, res) => {
+  const { name, email, phone, password } = req.body;
+  
+  if (!name || !email || !phone || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide all required fields"
+    });
+  }
+
+  try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists with this email"
+      });
+    }
+
+    const user = await User.create({ name, email, phone, password });
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRE }
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Account created successfully",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        membershipPlan: user.membershipPlan,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (error) {
+    console.error("Signup error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to create account"
+    });
+  }
+});
+
+router.post("/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "Please provide email and password"
+    });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user || !(await user.comparePassword(password))) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password"
+      });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRE }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        membershipPlan: user.membershipPlan,
+        createdAt: user.createdAt
+      }
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Login failed"
+    });
+  }
+});
+
+router.get("/user/dashboard", authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const bookings = await ClassBooking.find({ email: user.email });
+    const bmiCalculations = await BMIRecord.find({ email: user.email });
+    const nutritionPlans = await NutritionRecord.find({ email: user.email });
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        totalBookings: bookings.length,
+        bmiCalculations: bmiCalculations.length,
+        nutritionPlans: nutritionPlans.length
+      },
+      bookings: bookings.slice(-5) // Last 5 bookings
+    });
+  } catch (error) {
+    console.error("Dashboard error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch dashboard data"
+    });
+  }
+});
+
+router.post("/payment/process", authenticateToken, async (req, res) => {
+  const { planId, planName, amount, paymentMethod } = req.body;
+  
+  try {
+    // In a real app, integrate with Stripe/Razorpay here
+    // For demo, we'll just simulate successful payment
+    
+    const user = await User.findById(req.user.id);
+    user.membershipPlan = planName.toLowerCase();
+    user.membershipStatus = 'active';
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Payment successful! Membership activated.",
+      paymentId: `pay_${Date.now()}`,
+      membershipPlan: planName
+    });
+  } catch (error) {
+    console.error("Payment error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Payment processing failed"
+    });
+  }
+});
 
 // Contact form endpoint
 router.post("/send/mail", async (req, res) => {

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { apiCall, API_ENDPOINTS } from '../config/api';
 
 const BMICalculator = () => {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [gender, setGender] = useState('');
+  const [email, setEmail] = useState('');
   const [bmi, setBmi] = useState('');
   const [status, setStatus] = useState('');
   const [showResult, setShowResult] = useState(false);
 
-  const calculateBMI = (e) => {
+  const calculateBMI = async (e) => {
     e.preventDefault();
 
     if (!height || !weight || !gender) {
@@ -17,28 +19,36 @@ const BMICalculator = () => {
       return;
     }
 
-    const heightInMeters = height / 100;
-    const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
-    setBmi(bmiValue);
+    try {
+      const response = await apiCall(API_ENDPOINTS.BMI_CALCULATE, {
+        method: 'POST',
+        body: JSON.stringify({
+          height: parseFloat(height),
+          weight: parseFloat(weight),
+          gender,
+          email: email || undefined
+        })
+      });
 
-    if (bmiValue < 18.5) {
-      setStatus('Underweight');
-    } else if (bmiValue >= 18.5 && bmiValue < 24.9) {
-      setStatus('Normal weight');
-    } else if (bmiValue >= 25 && bmiValue < 29.9) {
-      setStatus('Overweight');
-    } else {
-      setStatus('Obese');
+      if (response.success) {
+        setBmi(response.bmi);
+        setStatus(response.status);
+        setShowResult(true);
+        toast.success('BMI calculated and saved successfully!');
+      } else {
+        toast.error(response.message || 'Failed to calculate BMI');
+      }
+    } catch (error) {
+      console.error('BMI calculation error:', error);
+      toast.error('Failed to calculate BMI. Please try again.');
     }
-
-    setShowResult(true);
-    toast.success('BMI calculated successfully!');
   };
 
   const resetCalculator = () => {
     setHeight('');
     setWeight('');
     setGender('');
+    setEmail('');
     setBmi('');
     setStatus('');
     setShowResult(false);
@@ -98,6 +108,17 @@ const BMICalculator = () => {
               </select>
             </div>
             
+            <div className="form-group">
+              <label htmlFor="email">Email (Optional)</label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email to save results"
+              />
+            </div>
+            
             <div className="bmi-buttons">
               <button type="submit" className="btn btn-primary">
                 CALCULATE BMI
@@ -124,6 +145,7 @@ const BMICalculator = () => {
                 <p><strong>Height:</strong> {height} cm</p>
                 <p><strong>Weight:</strong> {weight} kg</p>
                 <p><strong>Gender:</strong> {gender}</p>
+                {email && <p><strong>Email:</strong> {email}</p>}
               </div>
               
               <p className="bmi-advice">

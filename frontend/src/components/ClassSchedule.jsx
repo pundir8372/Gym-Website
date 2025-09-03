@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { disableBodyScroll, enableBodyScroll } from '../utils/scrollLock';
 
-const ClassSchedule = () => {
+const ClassSchedule = ({ user }) => {
   const [selectedClass, setSelectedClass] = useState(null);
   const [bookingData, setBookingData] = useState({
-    name: "",
-    email: "",
-    phone: ""
+    name: user?.name || "",
+    email: user?.email || "",
+    phone: user?.phone || ""
   });
+
+  useEffect(() => {
+    if (user) {
+      setBookingData({
+        name: user.name || "",
+        email: user.email || "",
+        phone: user.phone || ""
+      });
+    }
+  }, [user]);
 
   const classes = [
     {
